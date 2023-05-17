@@ -24,12 +24,14 @@ def obtener_ruta(ciudad1, ciudad2):
 
     duracion = timedelta(hours=tiempo_horas)
     duracion_formateada = str(duracion)
-#la narrativa no a salido muy bien pero funciona
-    ruta = f"Para llegar de {ciudad1} a {ciudad2}, sigue la siguiente ruta:"
+#lo que hago aqui es basicamente preguntar la cuidad de origen y la cuidad de destino
+#hace una narratiba breve del recorrido
+#dice la distancia total de un punto a otro en kilometros
+    ruta = f"Para llegar desde {ciudad1} a tu destino {ciudad2}, sigue la siguiente ruta:"
     ruta += f"\n1. Parte de {ciudad1}."
     ruta += f"\n2. Sigue por la carretera principal hacia el este durante {duracion_formateada}."
-    ruta += f"\n3. Llegarás a tu destino, {ciudad2}."
-    ruta += f"\n\nLa distancia total del recorrido es de {distancia_km} kilómetros."
+    ruta += f"\n3. Llegarás finalmente a tu destino, {ciudad2}."
+    ruta += f"\n\nLa distancia total de un punto a otro es de {distancia_km} kilómetros."
 
     print(ruta)
 
