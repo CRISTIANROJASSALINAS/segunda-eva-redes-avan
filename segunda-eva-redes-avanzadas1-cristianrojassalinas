@@ -1,0 +1,47 @@
+#PROFE!!!**** MUY IMPORTANTE PARA EJECUTAR MI CODIGO DEBE INSTALAR lA BIBLIOTECA GEOPY CON EL SIGUIENTE COMANDO:
+#-------->>>>>>>>     pip install geopy
+#la ciudad de origen y destino la ingresa usted
+#la consola debera mostarle todo lo que configure
+
+
+from geopy.geocoders import Nominatim
+from geopy import distance
+from datetime import timedelta
+import sys
+
+#abajo lo que hago es obtener una ruta
+def obtener_ruta(ciudad1, ciudad2):
+    geolocator = Nominatim(user_agent="my_app")
+    location1 = geolocator.geocode(ciudad1)
+    location2 = geolocator.geocode(ciudad2)
+    coordenadas1 = (location1.latitude, location1.longitude)
+    coordenadas2 = (location2.latitude, location2.longitude)
+
+    distancia_km = round(distance.distance(coordenadas1, coordenadas2).kilometers, 1)
+
+    velocidad_promedio_km_h = 60  # puse una velocidad promedio de 60kmh
+    tiempo_horas = distancia_km / velocidad_promedio_km_h
+
+    duracion = timedelta(hours=tiempo_horas)
+    duracion_formateada = str(duracion)
+#la narrativa no a salido muy bien pero funciona
+    ruta = f"Para llegar de {ciudad1} a {ciudad2}, sigue la siguiente ruta:"
+    ruta += f"\n1. Parte de {ciudad1}."
+    ruta += f"\n2. Sigue por la carretera principal hacia el este durante {duracion_formateada}."
+    ruta += f"\n3. Llegarás a tu destino, {ciudad2}."
+    ruta += f"\n\nLa distancia total del recorrido es de {distancia_km} kilómetros."
+
+    print(ruta)
+
+# en este input lo que hago en pedirle la ciudad de origen y la ciudad de destino
+ciudad1 = input("Ingrese la ciudad de origen: ")
+ciudad2 = input("Ingrese la ciudad de destino: ")
+
+# lo que hago aqui es que si ingreso s o salida se cierre el terminal, tras muchas pruebas solo me funciona en salida
+if ciudad1.lower() == "s" or ciudad1.lower() == "salida":
+    sys.exit("Has decidido salir del programa.")
+
+if ciudad2.lower() == "s" or ciudad2.lower() == "salida":
+    sys.exit("Has decidido salir del programa.")
+
+obtener_ruta(ciudad1, ciudad2)
