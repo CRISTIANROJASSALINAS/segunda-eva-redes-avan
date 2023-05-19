@@ -1,7 +1,85 @@
+#tratare de documentar todo
+#bueno primeramente tuve que instalar requestes en el terminal, json lo tenia
+
+import requests
+import json
+#aqui lo que hago es ir a buscar datos al sitio web, donde me logie y me dieron una key que es la esta abajo, es personal.
+def obtener_coordenadas(ciudad):
+    url = "http://www.mapquestapi.com/geocoding/v1/address"
+    params = {
+        "key": "Xpwv0ZOjv8oHQZ9TH8x3GXBWvKnL3kAg",
+        "location": ciudad,
+        "maxResults": 1,
+        "thumbMaps": False
+    }
+    response = requests.get(url, params=params)
+    data = response.json()
+    lat = data["results"][0]["locations"][0]["latLng"]["lat"]
+    lng = data["results"][0]["locations"][0]["latLng"]["lng"]
+    return lat, lng
+#en este paso lo que se hace es buscar calcular la distancia entre puntos, origen y destino, route-> from to
+#repito la key logicamente por que otra vez le pido informacion a la pagina
+def calcular_distancia(origen, destino):
+    url = "http://www.mapquestapi.com/directions/v2/route"
+    params = {
+        "key": "Xpwv0ZOjv8oHQZ9TH8x3GXBWvKnL3kAg",
+        "from": origen,
+        "to": destino,
+        "unit": "k"
+    }
+    response = requests.get(url, params=params)
+    data = response.json()
+    distance = data["route"]["distance"]
+    return distance
+#aqui se conviente el tiempo, para dar como resultado final horas minutos segundos.
+def convertir_tiempo(segundos):
+    horas = segundos // 3600
+    minutos = (segundos % 3600) // 60
+    segundos = segundos % 60
+    return horas, minutos, segundos
+#aqui hago que pregunte la ciudad de origen y la cuidad de destino
+#tambien creo una variable que dicta que si ingreso s se caiga el programa
+while True:
+    origen = input("Insertar ciudad de origen: ")
+    if origen.lower() == "s":
+        break
+    destino = input("Insertar ciudad de destino: ")
+    if destino.lower() == "s":
+        break
+
+    if obtener_coordenadas(origen) and obtener_coordenadas(destino):
+        break
+    else:
+        print("Intente de nuevo ingresando ciudades válidas.")
+
+if origen.lower() != "s" and destino.lower() != "s":
+    distancia = calcular_distancia(origen, destino)
+
+    duracion_segundos = distancia / 100 * 3600
+
+    horas, minutos, segundos = convertir_tiempo(duracion_segundos)
+#aqui hago que responda al distancia del trayecto en km
+#tambien que responda la duracion del trayecto en horas minutos y segundos
+    print("Distancia entre puntos:", round(distancia, 1), "km")
+    print("Duración del trayecto:", round(horas,), "horas,", round(minutos,), "minutos,", round(segundos,), "segundos")
+#finalmente que muestre resultados
+    resultados = {
+        "Distancia entre puntos": round(distancia, 1),
+        "Duración del trayecto": f"{round(horas,)} horas, {round(minutos,)} minutos, {round(segundos,)} segundos"
+    }
+
+
+----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+--------------------->>>>>>>>>>     LEA ABAJO     --------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+#ESTE ES UN CODIGO DISTINTO PERO BASICAMENTE HACE LO MISMO, EVALUE USTED EL QUE GUSTE MAS;
+
 #PROFE!!!**** MUY IMPORTANTE PARA EJECUTAR MI CODIGO DEBE INSTALAR lA BIBLIOTECA GEOPY CON EL SIGUIENTE COMANDO:
 #-------->>>>>>>>     pip install geopy
 #la ciudad de origen y destino la ingresa usted
-#la consola debera mostarle todo lo que configure
 
 
 from geopy.geocoders import Nominatim
@@ -47,3 +125,4 @@ if ciudad2.lower() == "s" or ciudad2.lower() == "salida":
     sys.exit("Has decidido salir del programa.")
 
 obtener_ruta(ciudad1, ciudad2)
+
