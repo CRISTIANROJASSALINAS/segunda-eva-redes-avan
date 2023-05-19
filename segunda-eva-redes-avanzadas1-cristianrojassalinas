@@ -19,7 +19,7 @@ def obtener_ruta(ciudad1, ciudad2):
 
     distancia_km = round(distance.distance(coordenadas1, coordenadas2).kilometers, 1)
 
-    velocidad_promedio_km_h = 60  # puse una velocidad promedio de 60kmh
+    velocidad_promedio_km_h = 80  # puse una velocidad promedio de 60kmh
     tiempo_horas = distancia_km / velocidad_promedio_km_h
 
     duracion = timedelta(hours=tiempo_horas)
